@@ -1955,9 +1955,9 @@ yyreduce:
  {
    Builder->CreateCondBr((yyvsp[-1].value), if_then, if_else);   
  }
- else if((yyvsp[-1].value)->getType() == Builder->getInt32Ty())
+ else if((yyvsp[-1].value)->getType() == Builder->getInt64Ty())
  {
-    Builder->CreateCondBr(Builder->CreateICmpNE((yyvsp[-1].value),Builder->getInt32(0)), if_then, if_else);
+    Builder->CreateCondBr(Builder->CreateICmpNE((yyvsp[-1].value),Builder->getInt64(0)), if_then, if_else);
  }
  else if(PointerType *py = dyn_cast<PointerType>((yyvsp[-1].value)->getType()))
  {
@@ -2205,7 +2205,7 @@ yyreduce:
     {
     Value *val = Builder->CreateICmpSLT((yyvsp[-2].value), (yyvsp[0].value));
    // $$ = Builder->CreateSelect(val, $1, $3);
-    (yyval.value) = Builder->CreateSExt(val, Builder->getInt32Ty());
+    (yyval.value) = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 #line 2211 "cmm.y.cpp" /* yacc.c:1646  */
     break;
@@ -2215,7 +2215,7 @@ yyreduce:
     {
     Value *val = Builder->CreateICmpSGT((yyvsp[-2].value), (yyvsp[0].value));
     //$$ = Builder->CreateSelect(val, $1, $3);
-    (yyval.value) = Builder->CreateSExt(val, Builder->getInt32Ty());
+    (yyval.value) = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 #line 2221 "cmm.y.cpp" /* yacc.c:1646  */
     break;
@@ -2225,7 +2225,7 @@ yyreduce:
     {
     Value *val = Builder->CreateICmpSLE((yyvsp[-2].value), (yyvsp[0].value));
     //$$ = Builder->CreateSelect(val, $1, $3);
-    (yyval.value) = Builder->CreateSExt(val, Builder->getInt32Ty());
+    (yyval.value) = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 #line 2231 "cmm.y.cpp" /* yacc.c:1646  */
     break;
@@ -2235,7 +2235,7 @@ yyreduce:
     {
     Value *val = Builder->CreateICmpSGT((yyvsp[-2].value), (yyvsp[0].value));
     //$$ = Builder->CreateSelect(val, $1, $3);
-    (yyval.value) = Builder->CreateSExt(val, Builder->getInt32Ty());
+    (yyval.value) = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 #line 2241 "cmm.y.cpp" /* yacc.c:1646  */
     break;

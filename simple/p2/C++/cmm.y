@@ -369,9 +369,9 @@ IF LPAREN bool_expression RPAREN
  {
    Builder->CreateCondBr($3, if_then, if_else);   
  }
- else if($3->getType() == Builder->getInt32Ty())
+ else if($3->getType() == Builder->getInt64Ty())
  {
-    Builder->CreateCondBr(Builder->CreateICmpNE($3,Builder->getInt32(0)), if_then, if_else);
+    Builder->CreateCondBr(Builder->CreateICmpNE($3,Builder->getInt64(0)), if_then, if_else);
  }
  else if(PointerType *py = dyn_cast<PointerType>($3->getType()))
  {
@@ -549,25 +549,25 @@ expression:
 {
     Value *val = Builder->CreateICmpSLT($1, $3);
    // $$ = Builder->CreateSelect(val, $1, $3);
-    $$ = Builder->CreateSExt(val, Builder->getInt32Ty());
+    $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression GT expression
 {
     Value *val = Builder->CreateICmpSGT($1, $3);
     //$$ = Builder->CreateSelect(val, $1, $3);
-    $$ = Builder->CreateSExt(val, Builder->getInt32Ty());
+    $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression LTE expression
 {
     Value *val = Builder->CreateICmpSLE($1, $3);
     //$$ = Builder->CreateSelect(val, $1, $3);
-    $$ = Builder->CreateSExt(val, Builder->getInt32Ty());
+    $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression GTE expression
 {
     Value *val = Builder->CreateICmpSGT($1, $3);
     //$$ = Builder->CreateSelect(val, $1, $3);
-    $$ = Builder->CreateSExt(val, Builder->getInt32Ty());
+    $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression LSHIFT expression
 {
