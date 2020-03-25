@@ -388,7 +388,6 @@ IF LPAREN bool_expression RPAREN
 {
   printf("if part2 statement\n");
   loop_info info = get_loop();
-  //pop_loop(); 
   if(!Builder->GetInsertBlock()->getTerminator())
       Builder->CreateBr(info.exit);    //to join block
   Builder->SetInsertPoint(info.reinit);   //next thing is the join block
@@ -414,47 +413,25 @@ WHILE
  BasicBlock *expr = BasicBlock::Create(M->getContext(), "while.expr", Fun);
  Builder->CreateBr(expr);
  Builder->SetInsertPoint(expr);
- 
  push_loop(expr,expr,expr,expr);
-	//BasicBlock *expr = BasicBlock::Create(TheContext,"w.expr",Fun);
-	//Builder->CreateBr(expr);
-	//Builder->SetInsertPoint(expr);
-	//BBjoin = expr;
 }
 LPAREN bool_expression RPAREN 
 {
   loop_info info = get_loop();
   pop_loop();  
-  
   BasicBlock *body = BasicBlock::Create(M->getContext(), "while.body", Fun); 
   BasicBlock *exit = BasicBlock::Create(M->getContext(), "while.exit", Fun); 
-  
-  // call push loop to record this loop's important blocks
   push_loop(info.expr, body, body, exit);
-  last_used_kind_save = last_used_kind;
-  last_used_kind = Loop_kind;
-
   Builder->CreateCondBr(Builder->CreateICmpNE($4, Builder->getInt64(0)), body,exit);
   Builder->SetInsertPoint(body); 
-	//BasicBlock *body = BasicBlock::Create(TheContext,"w.body",Fun);
-	//BasicBlock *exit = BasicBlock::Create(TheContext,"w.exit",Fun);
- // //Builder->CreateCondBr($3,body,exit);
-	//Builder->CreateCondBr(Builder->CreateICmpSGT($4, Builder->getInt32(0)),body,exit);
- 
-	//Builder->SetInsertPoint(body);
-	//BBjoin= exit;
 }
 statement
 {
   loop_info info = get_loop();
-  // insert back edge from body to header
   Builder->CreateBr(info.expr);
   Builder->SetInsertPoint(info.exit);
-  
   pop_loop();
   last_used_kind = last_used_kind_save;
-	//Builder->CreateBr(BBjoin);
-	//Builder->SetInsertPoint(BBjoin);
 }
 | FOR LPAREN expr_opt SEMICOLON 
 {
@@ -510,9 +487,7 @@ bool_expression: expression
 assign_expression:
   lvalue_location ASSIGN expression
 {
-   //create store 
    $$=Builder->CreateStore($3,$1);
-    //Builder.CreateStore($4,addr);
 }
 | expression
 {
@@ -548,25 +523,21 @@ expression:
 | expression LT expression
 {
     Value *val = Builder->CreateICmpSLT($1, $3);
-   // $$ = Builder->CreateSelect(val, $1, $3);
     $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression GT expression
 {
     Value *val = Builder->CreateICmpSGT($1, $3);
-    //$$ = Builder->CreateSelect(val, $1, $3);
     $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression LTE expression
 {
     Value *val = Builder->CreateICmpSLE($1, $3);
-    //$$ = Builder->CreateSelect(val, $1, $3);
     $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression GTE expression
 {
     Value *val = Builder->CreateICmpSGT($1, $3);
-    //$$ = Builder->CreateSelect(val, $1, $3);
     $$ = Builder->CreateSExt(val, Builder->getInt64Ty());
 }
 | expression LSHIFT expression
