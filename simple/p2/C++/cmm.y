@@ -435,25 +435,32 @@ statement
 }
 | FOR LPAREN expr_opt SEMICOLON 
 {
-  //BasicBlock *forcond= BasicBlock::Create(TheContext, "for.cond", Fun);
- // BasicBlock *forbody= BasicBlock::Create(TheContext, "for.body", Fun);
-  //BasicBlock *forexit= BasicBlock::Create(TheContext, "for.exit", Fun);
- // Builder->CreateBr(forcond);
-  //Builder->SetInsertPoint(forcond);
+  BasicBlock *expr = BasicBlock::Create(M->getContext(), "for.expr", Fun);
+  Builder->CreateBr(expr);
+  Builder->SetInsertPoint(expr);
+  push_loop(expr,NULL,NULL,NULL);
 }
 bool_expression SEMICOLON expr_opt RPAREN 
 {
-  //PHINode *phi_i=Builder->CreatePHI(Builder->getInt64Ty(), 2);
-  //Builder->CreateCondBr(Builder->CreateICmpSLT(phi_i,Builder->getInt64($3)), forbody, forexit);
-  //Builder.SetInsertPoint(forbody);
-  //Value * add = Builder.CreateAdd(phi_i, Builder.getInt64(1), "iplus1");
-  //Builder.CreateBr(forcond);
+  loop_info_t info = get_loop();
+  pop_loop();
+
+  BasicBlock *body = BasicBlock::Create(M->getContext(), "for.body", Fun); 
+  BasicBlock *exit = BasicBlock::Create(M->getContext(), "for.exit", Fun); 
+
+  // Call push loop to record this loop's important blocks
+  push_loop(info.expr, body, body, exit);
+
+  Builder->CreateCondBr($6, body,exit);
+  Builder->SetInsertPoint(body); 
 }
 statement 
 {
-  //Builder.SetInsertPoint(forexit);
-  //Builder.CreateRetVoid();
-  //phi_i->addIncoming(Builder.getInt64(0),entry);
+  loop_info_t info = get_loop();
+  // insert back edge from body to header
+  Builder->CreateBr(info.expr);
+  Builder->SetInsertPoint(info.exit);
+  pop_loop(); 
 }
 | DO statement WHILE LPAREN bool_expression RPAREN SEMICOLON
 ;
