@@ -560,9 +560,9 @@ static const yytype_uint16 yyrline[] =
      522,   526,   530,   534,   538,   543,   548,   553,   558,   562,
      566,   570,   574,   578,   582,   586,   590,   594,   598,   602,
      606,   607,   614,   614,   618,   622,   627,   631,   632,   644,
-     648,   659,   666,   670,   677,   691,   695,   702,   709,   716,
-     723,   730,   737,   744,   751,   758,   766,   773,   780,   787,
-     797,   805,   813,   820,   830
+     648,   659,   666,   670,   677,   691,   697,   704,   711,   718,
+     725,   732,   739,   746,   753,   760,   768,   775,   782,   789,
+     799,   807,   815,   822,   832
 };
 #endif
 
@@ -2433,109 +2433,111 @@ yyreduce:
   case 105:
 #line 692 "cmm.y" /* yacc.c:1646  */
     {
-  
+
+    Value *val= Builder->CreateGEP((yyvsp[-3].value), (yyvsp[-1].value),"");
+    (yyval.value) = Builder->CreateLoad(val);
 }
-#line 2439 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2441 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 106:
-#line 696 "cmm.y" /* yacc.c:1646  */
+#line 698 "cmm.y" /* yacc.c:1646  */
     {
     
 }
-#line 2447 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2449 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 107:
-#line 703 "cmm.y" /* yacc.c:1646  */
+#line 705 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = (yyvsp[0].value);
            #ifdef DEBUG
     printf("unary constant expression\n");
     #endif
 }
-#line 2458 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2460 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 108:
-#line 710 "cmm.y" /* yacc.c:1646  */
+#line 712 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateOr((yyvsp[-2].value),(yyvsp[0].value));
            #ifdef DEBUG
     printf("constant expression bitwise or\n");
     #endif
 }
-#line 2469 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2471 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 109:
-#line 717 "cmm.y" /* yacc.c:1646  */
+#line 719 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateXor((yyvsp[-2].value), (yyvsp[0].value));
            #ifdef DEBUG
     printf("constant expression xor\n");
     #endif
 }
-#line 2480 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2482 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 110:
-#line 724 "cmm.y" /* yacc.c:1646  */
+#line 726 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateAnd((yyvsp[-2].value), (yyvsp[0].value));
            #ifdef DEBUG
     printf("constant expression and\n");
     #endif
 }
-#line 2491 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2493 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 111:
-#line 731 "cmm.y" /* yacc.c:1646  */
+#line 733 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateShl((yyvsp[-2].value),(yyvsp[0].value));
            #ifdef DEBUG
     printf("constant expression leftshift\n");
     #endif
 }
-#line 2502 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2504 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 112:
-#line 738 "cmm.y" /* yacc.c:1646  */
+#line 740 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateLShr((yyvsp[-2].value),(yyvsp[0].value));  
            #ifdef DEBUG
     printf("constant expression rightshift\n");
     #endif
 }
-#line 2513 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2515 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 113:
-#line 745 "cmm.y" /* yacc.c:1646  */
+#line 747 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateAdd((yyvsp[-2].value), (yyvsp[0].value));
            #ifdef DEBUG
     printf("constant expression add\n");
     #endif
 }
-#line 2524 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2526 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 114:
-#line 752 "cmm.y" /* yacc.c:1646  */
+#line 754 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateSub((yyvsp[-2].value),(yyvsp[0].value));
            #ifdef DEBUG
     printf("constant expression sub\n");
     #endif
 }
-#line 2535 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2537 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 115:
-#line 759 "cmm.y" /* yacc.c:1646  */
+#line 761 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateMul((yyvsp[-2].value), (yyvsp[0].value));
        #ifdef DEBUG
@@ -2543,55 +2545,55 @@ yyreduce:
     #endif
 
 }
-#line 2547 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2549 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 116:
-#line 767 "cmm.y" /* yacc.c:1646  */
+#line 769 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateSDiv((yyvsp[-2].value), (yyvsp[0].value));
           #ifdef DEBUG
     printf("constant expression division\n");
     #endif
 }
-#line 2558 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2560 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 117:
-#line 774 "cmm.y" /* yacc.c:1646  */
+#line 776 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateSRem((yyvsp[-2].value), (yyvsp[0].value));
           #ifdef DEBUG
     printf("const expression mod\n");
     #endif
 }
-#line 2569 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2571 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 118:
-#line 781 "cmm.y" /* yacc.c:1646  */
+#line 783 "cmm.y" /* yacc.c:1646  */
     {
    (yyval.value) = Builder->CreateIntToPtr((yyvsp[-1].value),(yyvsp[-1].value)->getType(), ""); 
     #ifdef DEBUG
     printf("I2P const expression\n");
     #endif 
 }
-#line 2580 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2582 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 119:
-#line 788 "cmm.y" /* yacc.c:1646  */
+#line 790 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreatePtrToInt((yyvsp[-1].value),unwrap(LLVMInt32Type()), "");
           #ifdef DEBUG
     printf("P@I const expression\n");
     #endif
 }
-#line 2591 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2593 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 120:
-#line 798 "cmm.y" /* yacc.c:1646  */
+#line 800 "cmm.y" /* yacc.c:1646  */
     {
     //$$ = unwrap(LLVMConstInt(LLVMInt32Type(), $1, 0));
     (yyval.value)= (yyvsp[0].value);
@@ -2599,11 +2601,11 @@ yyreduce:
     printf("unary constant\n");
     #endif
 }
-#line 2603 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2605 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 121:
-#line 806 "cmm.y" /* yacc.c:1646  */
+#line 808 "cmm.y" /* yacc.c:1646  */
     {
     //Value* val = unwrap(LLVMConstInt(LLVMInt32Type(), $2, 0));
     (yyval.value) = Builder->CreateNeg((yyvsp[0].value));
@@ -2611,44 +2613,44 @@ yyreduce:
     printf("unary const minus\n");
     #endif
 }
-#line 2615 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2617 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 122:
-#line 814 "cmm.y" /* yacc.c:1646  */
+#line 816 "cmm.y" /* yacc.c:1646  */
     {
     (yyvsp[0].value) > Builder->getInt64(0) ? (yyval.value)=(yyvsp[0].value) : (yyval.value)=Builder->CreateNeg((yyvsp[0].value));
         #ifdef DEBUG
     printf("unary const plus\n");
     #endif
 }
-#line 2626 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2628 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 123:
-#line 821 "cmm.y" /* yacc.c:1646  */
+#line 823 "cmm.y" /* yacc.c:1646  */
     {
     (yyval.value) = Builder->CreateNot((yyvsp[0].value));
     #ifdef DEBUG
     printf("unary const Bitwise invert\n");
     #endif
 }
-#line 2637 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2639 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
   case 124:
-#line 831 "cmm.y" /* yacc.c:1646  */
+#line 833 "cmm.y" /* yacc.c:1646  */
     {
   (yyval.value) = Builder->getInt64((yyvsp[0].inum));
     #ifdef DEBUG
     printf("constant integer %d\n", (yyvsp[0].inum));
     #endif
 }
-#line 2648 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2650 "cmm.y.cpp" /* yacc.c:1646  */
     break;
 
 
-#line 2652 "cmm.y.cpp" /* yacc.c:1646  */
+#line 2654 "cmm.y.cpp" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2876,7 +2878,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 841 "cmm.y" /* yacc.c:1906  */
+#line 843 "cmm.y" /* yacc.c:1906  */
 
 
 Value* BuildFunction(Type* RetType, const char *name, 

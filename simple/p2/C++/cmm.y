@@ -690,7 +690,9 @@ ID
 }
 | lvalue_location LBRACKET expression RBRACKET
 {
-  
+
+    Value *val= Builder->CreateGEP($1, $3,"");
+    $$ = Builder->CreateLoad(val);
 }
 | STAR LPAREN expression RPAREN
 {
