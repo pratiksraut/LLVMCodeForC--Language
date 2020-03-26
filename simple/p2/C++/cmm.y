@@ -440,19 +440,27 @@ statement
   Builder->SetInsertPoint(expr);
   push_loop(expr,NULL,NULL,NULL);
 }
-bool_expression SEMICOLON expr_opt RPAREN 
+bool_expression SEMICOLON 
 {
   loop_info_t info = get_loop();
   pop_loop();
 
   BasicBlock *body = BasicBlock::Create(M->getContext(), "for.body", Fun); 
+  BasicBlock *inc = BasicBlock::Create(M->getContext(), "for.inc", Fun); 
   BasicBlock *exit = BasicBlock::Create(M->getContext(), "for.exit", Fun); 
 
   // Call push loop to record this loop's important blocks
-  push_loop(info.expr, body, body, exit);
+  push_loop(info.expr, body, inc, exit);
 
-  Builder->CreateCondBr($6, body,exit);
+  Builder->CreateCondBr(Builder->CreateICmpNE($6, Builder->getInt64(0)), body,exit);
   Builder->SetInsertPoint(body); 
+}
+expr_opt RPAREN 
+{
+  loop_info_t info = get_loop();
+  Builder->CreateBr(info.body);
+  //expr, body, reinit, exit
+  Builder->SetInsertPoint(info.body);
 }
 statement 
 {
@@ -623,7 +631,15 @@ primary_expression
 | AMPERSAND primary_expression
 | STAR primary_expression
 {
-    
+  if($2->getType()->isPointerTy())
+  {   
+    printf("pointer primary expression");
+    $$= Builder->CreateLoad($2);
+  }          
+  else
+  {
+     parser_error("Only pointer can be dereferenced! \n");
+  }
 }
 | MINUS unary_expression
 {
